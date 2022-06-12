@@ -1,0 +1,10 @@
+{
+    "Lua.diagnostics.globals": [
+        "client",
+        "awesome",
+        "root",
+        "screen",
+        "clientkeys",
+        "clientbuttons"
+    ]
+}
