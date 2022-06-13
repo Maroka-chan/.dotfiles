@@ -40,7 +40,7 @@ function helpers.mask_image(image, mask_shape, width, height)
         {
             forced_width = width,
             forced_height = height,
-            downscale = true,
+            resize = true,
             halign = 'center',
             valign = 'center',
             image = image,
@@ -50,5 +50,20 @@ function helpers.mask_image(image, mask_shape, width, height)
         widget = wibox.container.background
     }
 end
+
+function helpers.spacer(space, orientation)
+    if orientation == "horizontal" then
+        return wibox.widget {
+            left = beautiful.dpi(space),
+            widget = wibox.container.margin
+        }
+    elseif orientation == "vertical" then
+        return wibox.widget {
+            top = beautiful.dpi(space),
+            widget = wibox.container.margin
+        }
+    end
+end
+
 
 return helpers
