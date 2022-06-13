@@ -35,7 +35,24 @@ panel.create = function(s)
                 {
                     layout = wibox.layout.fixed.vertical,
                     date_widget,
-                    helpers.mask_image(beautiful.pfp, gears.shape.circle, theme.profile.size, theme.profile.size)
+                    helpers.spacer(40, "vertical"),
+                    helpers.mask_image(beautiful.pfp, gears.shape.circle, theme.profile.pfp_size, theme.profile.pfp_size),
+                    -- Text
+                    wibox.widget{
+                        markup = helpers.colorize_text(theme.profile.text.markup, theme.profile.text.color),
+                        font = theme.profile.text.font .. " " .. theme.profile.text.font_size,
+                        align  = 'center',
+                        valign = 'center',
+                        widget = wibox.widget.textbox
+                    },
+                    -- Subtext
+                    wibox.widget{
+                        markup = helpers.colorize_text(theme.profile.subtext.markup, theme.profile.subtext.color),
+                        font = theme.profile.subtext.font .. " " .. theme.profile.subtext.font_size,
+                        align  = 'center',
+                        valign = 'center',
+                        widget = wibox.widget.textbox
+                    }
                 },
                 widget = wibox.container.margin,
                 margins = theme.padding
