@@ -32,7 +32,9 @@ theme.colors = {}
 
 theme.colors.background = {
 	base = "#1e1e2e",
-	overlay_0 = "#6c7086"
+	mantle = "#181825",
+	overlay_0 = "#6c7086",
+	surface_0 = "#313244"
 }
 
 theme.colors.typography = {
@@ -42,7 +44,8 @@ theme.colors.typography = {
 
 theme.colors.regular = {
 	red = "#f38ba8",
-	yellow = "f9e2af"
+	yellow = "f9e2af",
+	teal = "#94e2d5"
 }
 
 
@@ -57,7 +60,7 @@ theme.colors.regular = {
 theme.fonts = {
 	primary = "CaskaydiaCove Nerd Font",
 	secondary = "Annie Use Your Telescope",
-	icons = "Font Awesome"
+	icons = "CaskaydiaCove Nerd Font"
 }
 
 
@@ -137,13 +140,13 @@ theme.widgets = {}
 
 theme.widgets.taglist = {
 	font = theme.fonts.icons,
-	font_size = 13,
+	font_size = 10,
 	spacing = dpi(5),
 	text = {
-		selected = "",
-		urgent = "⚡",
-		occupied = "",
-		empty = ""
+		selected = "",
+		urgent = "",
+		occupied = "",
+		empty = ""
 	},
 	colors = {
 		selected = theme.colors.regular.red,
@@ -176,6 +179,49 @@ theme.widgets.date = {
 	text_color = theme.colors.typography.text,
 	align = "left"
 }
+
+-- ===================================================================
+-- Usage Arc
+-- ===================================================================
+
+theme.widgets.usage_arc = {
+	percentage_font = theme.fonts.primary,
+	font_size = 14,
+	bg_color = theme.colors.background.overlay_0,
+	corner_radius = dpi(15),
+	margin = dpi(3),
+	arc = {
+		bg_color = theme.colors.background.mantle,
+		thickness = dpi(15)
+	}
+}
+
+-- ===================================================================
+-- CPU
+-- ===================================================================
+
+theme.widgets.cpu = {
+	markup = '',
+	icon_font = theme.fonts.icons,
+	font_size = 34,
+	color = theme.colors.regular.teal,
+	size = dpi(100),
+	update_interval = 1
+}
+
+-- ===================================================================
+-- RAM
+-- ===================================================================
+
+theme.widgets.ram = {
+	markup = '',
+	icon_font = theme.fonts.icons,
+	font_size = 34,
+	color = theme.colors.regular.red,
+	size = dpi(100),
+	update_interval = 1
+}
+
 
 
 
