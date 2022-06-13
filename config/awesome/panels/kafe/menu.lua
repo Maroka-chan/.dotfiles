@@ -5,6 +5,8 @@ local helpers       = require "helpers"
 local gears         = require "gears"
 local theme         = beautiful.panels.menu
 
+local date_widget   = require "widgets.date"
+
 -- define module table
 local panel = {}
 
@@ -29,13 +31,14 @@ panel.create = function(s)
         {
             expand = "none",
             layout = wibox.layout.align.vertical,
-            { -- First section
+            { -- Profile section
                 {
                     layout = wibox.layout.fixed.vertical,
+                    date_widget,
                     helpers.mask_image(beautiful.pfp, gears.shape.circle, theme.profile.size, theme.profile.size)
                 },
                 widget = wibox.container.margin,
-                margins = { top = 20 }
+                margins = theme.padding
             },
             { -- Second section
                 {
