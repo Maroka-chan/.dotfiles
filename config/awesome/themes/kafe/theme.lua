@@ -69,7 +69,12 @@ theme.fonts = {
 -- ██║░░░░░██║░░██║██║░╚███║███████╗███████╗██████╔╝
 -- ╚═╝░░░░░╚═╝░░╚═╝╚═╝░░╚══╝╚══════╝╚══════╝╚═════╝░
 
-theme.panels = {}
+theme.panels = {
+	border = {
+		width = dpi(4),
+		color = theme.colors.background.base .. "bb"
+	}
+}
 
 -- ===================================================================
 -- Main Panel
@@ -81,7 +86,8 @@ theme.panels.main = {
 	widget_spacing = dpi(10),
 	margin = dpi(5),
 	padding = dpi(5),
-	corner_radius = dpi(5)
+	corner_radius = dpi(5),
+	border = theme.panels.border
 }
 
 -- ===================================================================
@@ -94,7 +100,8 @@ theme.panels.menu = {
 	widget_spacing = dpi(10),
 	margin = dpi(5),
 	padding = dpi(20),
-	corner_radius = dpi(30)
+	corner_radius = dpi(30),
+	border = theme.panels.border
 }
 
 theme.panels.menu.profile = {
