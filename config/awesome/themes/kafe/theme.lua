@@ -100,7 +100,7 @@ theme.panels.menu = {
 	widget_spacing = dpi(10),
 	margin = dpi(5),
 	padding = dpi(20),
-	corner_radius = dpi(30),
+	corner_radius = dpi(20),
 	border = theme.panels.border
 }
 
