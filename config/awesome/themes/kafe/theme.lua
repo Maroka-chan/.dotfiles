@@ -12,7 +12,9 @@ local theme = {}
 theme.name = "Catppuccin Mocha"
 theme.dpi = dpi
 
+theme.username = "Maroka"
 theme.pfp = config_path .. "images/pfp.jpg"
+
 
 
 
@@ -54,6 +56,7 @@ theme.colors.regular = {
 
 theme.fonts = {
 	primary = "CaskaydiaCove Nerd Font",
+	secondary = "Annie Use Your Telescope",
 	icons = "Font Awesome"
 }
 
@@ -95,7 +98,19 @@ theme.panels.menu = {
 }
 
 theme.panels.menu.profile = {
-	size = dpi(200)
+	pfp_size = dpi(200),
+	text = {
+		markup = theme.username,
+		font = theme.fonts.secondary,
+		font_size = dpi(40),
+		color = theme.colors.typography.text,
+	},
+	subtext = {
+		markup = "@maroka-chan",
+		font = theme.fonts.secondary,
+		font_size = dpi(26),
+		color = theme.colors.background.overlay_0
+	}
 }
 
 
