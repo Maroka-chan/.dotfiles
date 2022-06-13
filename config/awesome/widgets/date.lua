@@ -1,8 +1,12 @@
-local wibox = require "wibox"
+local wibox     = require "wibox"
+local beautiful = require "beautiful"
+
+local theme     = beautiful.widgets.date
 
 -- Date widget
 local date = wibox.widget.textclock()
-date.format = "%a %d %b"
-date.font = "sans 10"
+date.format = '<span foreground="' .. theme.text_color .. '">' .. theme.format .. '</span>'
+date.align = theme.align
+date.font = theme.font .. " " .. theme.font_size
 
 return date
