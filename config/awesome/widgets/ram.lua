@@ -1,29 +1,9 @@
-local beautiful  = require "beautiful"
-local wibox      = require "wibox"
-local awful      = require "awful"
+local beautiful = require "beautiful"
+local theme     = beautiful.widgets.ram
 
--- RAM widget
-local icon = wibox.widget {
-    markup = '',
-    font = 'JetBrains Mono Regular Nerd Font Complete Mono 18',
-    widget = wibox.widget.textbox
-}
+local usage_arc = require "widgets.usage_arc"
 
-local percent = wibox.widget {
-    markup = '0%',
-    font = "arial 10",
-    widget = wibox.widget.textbox
-}
-
-local widget = {
-    layout = wibox.layout.fixed.horizontal,
-    forced_width = 45,
-    spacing = beautiful.dpi(4),
-    icon,
-    percent
-}
-
-awful.widget.watch('cat /proc/meminfo', 15, function(w, stdout)
+local ram_watch = function(widget, stdout)
   local total = stdout:match 'MemTotal:%s+(%d+)'
   local free = stdout:match 'MemFree:%s+(%d+)'
   local buffers = stdout:match 'Buffers:%s+(%d+)'
@@ -33,7 +13,21 @@ awful.widget.watch('cat /proc/meminfo', 15, function(w, stdout)
   local usepercent = used_kb / total * 100
 
   -- Set text widget to usage percent
-  percent:set_markup_silently(math.floor(usepercent) .. '%')
-end, widget)
+  widget.update_usage(math.floor(usepercent))
+end
+
+local widget = usage_arc({
+    markup = theme.markup,
+    icon_font = theme.icon_font,
+    font_size = theme.font_size,
+    color = theme.color,
+    max_value = 100,
+    size = theme.size,
+    usage_watch = {
+        command = 'cat /proc/meminfo',
+        interval = theme.update_interval,
+        callback = ram_watch,
+    }
+})
 
 return widget

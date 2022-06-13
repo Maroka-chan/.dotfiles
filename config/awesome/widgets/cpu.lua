@@ -1,32 +1,14 @@
 local helpers   = require "helpers"
 local beautiful = require "beautiful"
-local wibox     = require "wibox"
-local awful     = require "awful"
+local theme     = beautiful.widgets.cpu
 
--- CPU widget
-local icon = wibox.widget {
-    markup = '',
-    font = 'JetBrains Mono Regular Nerd Font Complete Mono 18',
-    widget = wibox.widget.textbox
-}
+local usage_arc = require "widgets.usage_arc"
 
-local percent = wibox.widget {
-    markup = '0%',
-    font = "arial 10",
-    widget = wibox.widget.textbox
-}
-
-local widget = {
-    layout = wibox.layout.fixed.horizontal,
-    forced_width = 45,
-    spacing = beautiful.dpi(4),
-    icon,
-    percent
-}
-
+-- Credit to Hitobat for the cpu usage calculation
+-- https://stackoverflow.com/a/3017438
 local prevtotal = 0
 local prevwork = 0
-awful.widget.watch('cat /proc/stat', 5, function(w, stdout)
+local cpu_watch = function(widget, stdout)
     local cpuinfo = stdout:match 'cpu%s+(.-)\n'
     local processes = helpers.split(cpuinfo, "%s")
 
@@ -42,10 +24,26 @@ awful.widget.watch('cat /proc/stat', 5, function(w, stdout)
     local usepercent = work_over_period / total_over_period * 100
 
     -- Set text widget to usage percent
-    percent:set_markup_silently(math.floor(usepercent) .. '%')
+    widget.update_usage(math.floor(usepercent))
 
     prevtotal = total
     prevwork = work
-end, widget)
+end
+
+local widget = usage_arc({
+    markup = theme.markup,
+    icon_font = theme.icon_font,
+    font_size = theme.font_size,
+    color = theme.color,
+    max_value = 100,
+    size = theme.size,
+    usage_watch = {
+        command = 'cat /proc/stat',
+        interval = theme.update_interval,
+        callback = cpu_watch,
+    }
+})
 
 return widget
+
+
