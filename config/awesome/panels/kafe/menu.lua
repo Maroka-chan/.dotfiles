@@ -77,6 +77,8 @@ panel.create = function(s)
         bg = theme.bg_color,
         -- The real, anti-aliased shape
         shape = helpers.rrect(theme.corner_radius),
+        border_width = theme.border.width,
+        border_color = theme.border.color,
         widget = wibox.container.background()
     }
 
@@ -86,14 +88,14 @@ panel.create = function(s)
     -- ===================================================================
 
     -- toggle panel
-    local function toggle_panel(client)
-        if client.screen == s then
+    local function toggle_panel(screen)
+        if screen == s then
             menu_panel.visible = not menu_panel.visible
         end
     end
 
     -- connect panel toggle function to relevant signals
-    client.connect_signal("sidepanel::toggle", toggle_panel)
+    awesome.connect_signal("menu::toggle", toggle_panel)
 
 end
 

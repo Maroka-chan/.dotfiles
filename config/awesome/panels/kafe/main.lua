@@ -63,6 +63,8 @@ panel.create = function(s)
         bg = theme.bg_color,
         -- The real, anti-aliased shape
         shape = helpers.rrect(theme.corner_radius),
+        border_width = theme.border.width,
+        border_color = theme.border.color,
         widget = wibox.container.background()
     }
 
