@@ -4,8 +4,11 @@ local awful         = require "awful"
 local helpers       = require "helpers"
 local gears         = require "gears"
 local theme         = beautiful.panels.menu
+local dpi           = beautiful.dpi
 
 local date_widget   = require "widgets.date"
+local cpu_widget    = require "widgets.cpu"
+local ram_widget    = require "widgets.ram"
 
 -- define module table
 local panel = {}
@@ -29,49 +32,50 @@ panel.create = function(s)
 
     menu_panel:setup {
         {
-            expand = "none",
-            layout = wibox.layout.align.vertical,
-            { -- Profile section
-                {
-                    layout = wibox.layout.fixed.vertical,
+            {
+                { -- First section
                     date_widget,
-                    helpers.spacer(40, "vertical"),
-                    helpers.mask_image(beautiful.pfp, gears.shape.circle, theme.profile.pfp_size, theme.profile.pfp_size),
-                    -- Text
-                    wibox.widget{
-                        markup = helpers.colorize_text(theme.profile.text.markup, theme.profile.text.color),
-                        font = theme.profile.text.font .. " " .. theme.profile.text.font_size,
-                        align  = 'center',
-                        valign = 'center',
-                        widget = wibox.widget.textbox
+                    helpers.spacer(25, "vertical"),
+                    { -- Profile section
+                        helpers.mask_image(beautiful.pfp, gears.shape.circle, theme.profile.pfp_size, theme.profile.pfp_size),
+                        helpers.spacer(20, "vertical"),
+                        { -- Text section
+                            -- Text
+                            wibox.widget{
+                                markup = helpers.colorize_text(theme.profile.text.markup, theme.profile.text.color),
+                                font = theme.profile.text.font .. " " .. theme.profile.text.font_size,
+                                align  = 'center',
+                                valign = 'center',
+                                widget = wibox.widget.textbox
+                            },
+                            -- Subtext
+                            wibox.widget{
+                                markup = helpers.colorize_text(theme.profile.subtext.markup, theme.profile.subtext.color),
+                                font = theme.profile.subtext.font .. " " .. theme.profile.subtext.font_size,
+                                align  = 'center',
+                                valign = 'center',
+                                widget = wibox.widget.textbox
+                            },
+                            layout = wibox.layout.flex.vertical,
+                            forced_height = dpi(80)
+                        },
+                        layout = wibox.layout.fixed.vertical
                     },
-                    -- Subtext
-                    wibox.widget{
-                        markup = helpers.colorize_text(theme.profile.subtext.markup, theme.profile.subtext.color),
-                        font = theme.profile.subtext.font .. " " .. theme.profile.subtext.font_size,
-                        align  = 'center',
-                        valign = 'center',
-                        widget = wibox.widget.textbox
-                    }
+                    layout = wibox.layout.fixed.vertical
                 },
-                widget = wibox.container.margin,
-                margins = theme.padding
-            },
-            { -- Second section
-                {
-                    layout = wibox.layout.fixed.vertical,
+                { -- Second section
+                    cpu_widget,
+                    ram_widget,
+                    layout = wibox.layout.fixed.horizontal
                 },
-                widget = wibox.container.margin,
-                margins = theme.padding
-            },
-            { -- Third section
-                {
+                { -- Third section
                     layout = wibox.layout.fixed.vertical,
                     spacing = beautiful.wibar_spacing,
                 },
-                widget = wibox.container.margin,
-                margins = theme.padding
-            }
+                layout = wibox.layout.fixed.vertical
+            },
+            widget = wibox.container.margin,
+            margins = theme.padding
         },
         -- The real background color
         bg = theme.bg_color,
