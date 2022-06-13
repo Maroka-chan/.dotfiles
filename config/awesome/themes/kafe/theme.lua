@@ -90,8 +90,8 @@ theme.panels.menu = {
 	width = dpi(400),
 	widget_spacing = dpi(10),
 	margin = dpi(5),
-	padding = dpi(5),
-	corner_radius = dpi(20)
+	padding = dpi(20),
+	corner_radius = dpi(30)
 }
 
 theme.panels.menu.profile = {
