@@ -143,6 +143,18 @@ theme.widgets.clock = {
 	line_height = 1.2
 }
 
+-- ===================================================================
+-- Date
+-- ===================================================================
+
+theme.widgets.date = {
+	format = "%a, %d %b",
+	font = theme.fonts.primary,
+	font_size = 13,
+	text_color = theme.colors.typography.text,
+	align = "left"
+}
+
 
 
 -- ██╗░█████╗░░█████╗░███╗░░██╗░██████╗
