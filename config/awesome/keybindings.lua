@@ -42,11 +42,7 @@ clientkeys = ez.keytable {
         c.maximized_horizontal = not c.maximized_horizontal
         c:raise()
     end,
-    { description = "(un)maximize client horizontally", group = "client" }},
-    ["M-Tab"]       = { function (c)
-        c:emit_signal("sidepanel::toggle", c)
-    end,
-    { description = "Toggle sidepanel", group = "client" }}
+    { description = "(un)maximize client horizontally", group = "client" }}
 }
 
 clientbuttons = ez.btntable {
@@ -130,7 +126,11 @@ local globalkeys    = ez.keytable {
             c:emit_signal("request::activate", "key.unminimize", {raise = true})
         end
     end,
-    { description = "Restore minimized client", group = "client" }}
+    { description = "Restore minimized client", group = "client" }},
+    ["M-Tab"]       = { function ()
+        awesome.emit_signal("menu::toggle", awful.screen.focused())
+    end,
+    { description = "Toggle menu", group = "awesome" }}
 }
 
 
