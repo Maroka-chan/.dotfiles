@@ -14,7 +14,7 @@ awful.layout.layouts = {
 kafe.init = function()
     -- Import Panels
     local main_panel = require("panels.kafe.main")
-    local overlay_sidepanel = require("panels.kafe.menu")
+    local menu_panel = require("panels.kafe.menu")
 
     -- Set up screens
     awful.screen.connect_for_each_screen(function(s)
@@ -27,7 +27,7 @@ kafe.init = function()
         end
 
         main_panel.create(s)
-        overlay_sidepanel.create(s)
+        menu_panel.create(s)
     end)
 end
 
