@@ -44,7 +44,7 @@ theme.colors.typography = {
 
 theme.colors.regular = {
 	red = "#f38ba8",
-	yellow = "f9e2af",
+	yellow = "#f9e2af",
 	teal = "#94e2d5"
 }
 
@@ -187,12 +187,12 @@ theme.widgets.date = {
 theme.widgets.usage_arc = {
 	percentage_font = theme.fonts.primary,
 	font_size = 14,
-	bg_color = theme.colors.background.overlay_0,
+	bg_color = theme.colors.background.surface_0,
 	corner_radius = dpi(15),
-	margin = dpi(3),
+	margin = dpi(4),
 	arc = {
 		bg_color = theme.colors.background.mantle,
-		thickness = dpi(15)
+		thickness = dpi(11)
 	}
 }
 
@@ -205,8 +205,8 @@ theme.widgets.cpu = {
 	icon_font = theme.fonts.icons,
 	font_size = 34,
 	color = theme.colors.regular.teal,
-	size = dpi(100),
-	update_interval = 1
+	size = dpi(110),
+	update_interval = 2
 }
 
 -- ===================================================================
@@ -214,12 +214,25 @@ theme.widgets.cpu = {
 -- ===================================================================
 
 theme.widgets.ram = {
-	markup = '',
+	markup = '',
 	icon_font = theme.fonts.icons,
-	font_size = 34,
+	font_size = 25,
 	color = theme.colors.regular.red,
-	size = dpi(100),
-	update_interval = 1
+	size = dpi(110),
+	update_interval = 5
+}
+
+-- ===================================================================
+-- Disk
+-- ===================================================================
+
+theme.widgets.disk = {
+	markup = '',
+	icon_font = theme.fonts.icons,
+	font_size = 25,
+	color = theme.colors.regular.yellow,
+	size = dpi(110),
+	partition = "/"  -- This can either be the partition or the mount point
 }
 
 
