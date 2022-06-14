@@ -9,6 +9,7 @@ local dpi           = beautiful.dpi
 local date_widget   = require "widgets.date"
 local cpu_widget    = require "widgets.cpu"
 local ram_widget    = require "widgets.ram"
+local disk_widget   = require "widgets.disk"
 
 -- define module table
 local panel = {}
@@ -66,7 +67,9 @@ panel.create = function(s)
                 { -- Second section
                     cpu_widget,
                     ram_widget,
-                    layout = wibox.layout.fixed.horizontal
+                    disk_widget,
+                    layout = wibox.layout.align.horizontal,
+                    expand = "none"
                 },
                 { -- Third section
                     layout = wibox.layout.fixed.vertical,
