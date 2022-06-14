@@ -48,7 +48,21 @@ local create = function(args)
         end
     }
 
-    awful.widget.watch(args.usage_watch.command, args.usage_watch.interval, args.usage_watch.callback, widget_functions)
+    -- Only run when opening the menu if no interval is specified
+    if not (args.usage_watch.interval == nil) then
+        awful.widget.watch(args.usage_watch.command, args.usage_watch.interval, args.usage_watch.callback, widget_functions)
+    else
+        local is_done = true
+        awesome.connect_signal("menu::toggle", function ()
+            if is_done then
+                is_done = false
+                awful.spawn.easy_async_with_shell(args.usage_watch.command, function (out)
+                    args.usage_watch.callback(widget_functions, out)
+                    is_done = true
+                end)
+            end
+        end)
+    end
 
     container:setup {
         {
