@@ -1,15 +1,16 @@
-local beautiful     = require "beautiful"
-local wibox         = require "wibox"
-local awful         = require "awful"
-local helpers       = require "helpers"
-local gears         = require "gears"
-local theme         = beautiful.panels.menu
-local dpi           = beautiful.dpi
+local beautiful      = require "beautiful"
+local wibox          = require "wibox"
+local awful          = require "awful"
+local helpers        = require "helpers"
+local gears          = require "gears"
+local theme          = beautiful.panels.menu
+local dpi            = beautiful.dpi
 
-local date_widget   = require "widgets.date"
-local cpu_widget    = require "widgets.cpu"
-local ram_widget    = require "widgets.ram"
-local disk_widget   = require "widgets.disk"
+local date_widget    = require "widgets.date"
+local cpu_widget     = require "widgets.cpu"
+local ram_widget     = require "widgets.ram"
+local disk_widget    = require "widgets.disk"
+local weather_widget = require "widgets.weather"
 
 -- define module table
 local panel = {}
@@ -72,8 +73,8 @@ panel.create = function(s)
                     expand = "none"
                 },
                 { -- Third section
-                    layout = wibox.layout.fixed.vertical,
-                    spacing = beautiful.wibar_spacing,
+                    weather_widget,
+                    layout = wibox.layout.fixed.vertical
                 },
                 layout = wibox.layout.fixed.vertical
             },
