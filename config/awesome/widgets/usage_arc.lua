@@ -28,11 +28,12 @@ local create = function(args)
     local arcchart = wibox.widget {
         textbox,
         max_value = args.max_value,
-        values = { 0, 0 },
-        colors = { theme.arc.bg_color, args.color },
+        value = 0,
+        colors = { args.color },
+        bg = theme.arc.bg_color,
         thickness = theme.arc.thickness * scale,
         start_angle = math.pi,
-        visible = true,
+        rounded_edge = true,
         widget = wibox.container.arcchart
     }
 
@@ -43,7 +44,7 @@ local create = function(args)
             if show_percentage then
                 textbox:set_markup_silently(helpers.colorize_text(usage .. '%', args.color))
             end
-            arcchart.values = { args.max_value - usage, usage }
+            arcchart.value = usage
             old_usage = usage
         end
     }
