@@ -235,6 +235,20 @@ theme.widgets.disk = {
 	partition = "/"  -- This can either be the partition or the mount point
 }
 
+-- ===================================================================
+-- Weather
+-- ===================================================================
+
+theme.widgets.weather = {
+	altitude = "12",
+	lat = "55.67064",
+	lon = "12.534599",
+	font = theme.fonts.primary,
+	font_size = 14,
+	icon_font = theme.fonts.icons,
+	icon_size = 24,
+	color = theme.colors.typography.text
+}
 
 
 
