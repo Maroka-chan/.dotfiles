@@ -11,7 +11,7 @@ local create = function(args)
         width = args.size,
         bg = "#00000000",
         ontop = true,
-        visible = true,
+        visible = false,
     })
 
     args.size = beautiful.dpi(args.size)
