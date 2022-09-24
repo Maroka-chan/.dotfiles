@@ -60,8 +60,6 @@ clientbuttons = ez.btntable {
 local globalkeys    = ez.keytable {
     ["M-d"]         = { function () awful.spawn(Apps.launcher) end,
     { description = "Show Rofi", group = "app" }},
-    ["M-S-."]       = { function () awful.spawn(config_path .. "lib/splatmoji/splatmoji -j type") end,
-    { description = "Show Rofimoji", group = "app" }},
     ["M-b"]         = { function () awful.spawn("firefox") end,
     { description = "Open Firefox", group = "app" }},
     ["Print"]       = { function () awful.spawn("flameshot full -c") end,
