@@ -1,10 +1,10 @@
 local beautiful     = require "beautiful"
 local wibox         = require "wibox"
 local awful         = require "awful"
-local taglist      = require "widgets.taglist"
+local taglist       = require "widgets.taglist"
+local tasklist      = require "widgets.tasklist"
 local layout_widget = require "widgets.layout"
 local clock_widget  = require "widgets.clock"
-local helpers       = require "helpers"
 local theme         = beautiful.panels.main
 
 -- define module table
@@ -21,11 +21,10 @@ panel.create = function(s)
     local main_panel = awful.wibar({
         screen = s,
         position = "left",
-        height = s.geometry.height - theme.margin * 2,
+        height = s.geometry.height,
         width = theme.width,
         bg = "#00000000",  -- Make transparent and set shape in :setup to get anti aliased corners
-        ontop = true,
-        margins = { left = theme.margin, right = theme.margin }
+        ontop = true
     })
 
     main_panel:setup {
@@ -35,10 +34,10 @@ panel.create = function(s)
             { -- First section
                 {
                     layout = wibox.layout.fixed.vertical,
-                    spacing = theme.widget_spacing,
+                    tasklist.create(s)
                 },
                 widget = wibox.container.margin,
-                margins = theme.padding
+                margins = theme.section_1.padding
             },
             { -- Second section
                 {
@@ -46,7 +45,7 @@ panel.create = function(s)
                     taglist.create(s)
                 },
                 widget = wibox.container.margin,
-                margins = theme.padding
+                margins = theme.section_2.padding
             },
             { -- Third section
                 {
@@ -56,15 +55,11 @@ panel.create = function(s)
                     layout_widget.create(s)
                 },
                 widget = wibox.container.margin,
-                margins = theme.padding
+                margins = theme.section_3.padding
             }
         },
         -- The real background color
         bg = theme.bg_color,
-        -- The real, anti-aliased shape
-        shape = helpers.rrect(theme.corner_radius),
-        border_width = theme.border.width,
-        border_color = theme.border.color,
         widget = wibox.container.background()
     }
 
