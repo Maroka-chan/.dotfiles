@@ -149,7 +149,8 @@ theme.widgets.tasklist = {
 		color = theme.colors.background.overlay_0,
 		thickness = dpi(1)
 	},
-	spacing = dpi(3)
+	spacing = dpi(3),
+	icon_margin = dpi(3)
 }
 
 theme.tasklist_bg_normal = theme.colors.background.base

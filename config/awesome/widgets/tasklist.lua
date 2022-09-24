@@ -48,7 +48,7 @@ tasklist.create = function(s)
             {
                 {
                     awful.widget.clienticon,
-                    margins = 2,
+                    margins = theme.icon_margin,
                     widget  = wibox.container.margin
                 },
                 layout = wibox.layout.align.vertical,
