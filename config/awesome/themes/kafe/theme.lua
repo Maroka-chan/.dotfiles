@@ -155,6 +155,7 @@ theme.widgets.tasklist = {
 
 theme.tasklist_bg_normal = theme.colors.background.base
 theme.tasklist_bg_focus = theme.colors.background.surface_0
+theme.tasklist_bg_minimize = theme.colors.background.mantle
 
 -- ===================================================================
 -- Taglist
