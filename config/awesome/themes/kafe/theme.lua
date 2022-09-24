@@ -85,12 +85,17 @@ theme.panels = {
 
 theme.panels.main = {
 	bg_color = theme.colors.background.base,
-	width = dpi(40),
+	width = dpi(32),
 	widget_spacing = dpi(10),
-	margin = dpi(5),
-	padding = dpi(5),
-	corner_radius = dpi(5),
-	border = theme.panels.border
+	section_1 = {
+		padding = dpi(2),
+	},
+	section_2 = {
+		padding = dpi(5),
+	},
+	section_3 = {
+		padding = dpi(5),
+	}
 }
 
 -- ===================================================================
@@ -133,6 +138,22 @@ theme.panels.menu.profile = {
 -- ░░░╚═╝░░░╚═╝░░╚═╝╚═════╝░░╚═════╝░╚══════╝░░░╚═╝░░░╚═════╝░
 
 theme.widgets = {}
+
+-- ===================================================================
+-- Tasklist
+-- ===================================================================
+
+theme.widgets.tasklist = {
+	spacer = {
+		width = theme.panels.main.width - dpi(8),
+		color = theme.colors.background.overlay_0,
+		thickness = dpi(1)
+	},
+	spacing = dpi(3)
+}
+
+theme.tasklist_bg_normal = theme.colors.background.base
+theme.tasklist_bg_focus = theme.colors.background.surface_0
 
 -- ===================================================================
 -- Taglist
@@ -295,13 +316,10 @@ theme.layout_cornerse = layoutimg("cornersew.png")
 -- ╚█████╔╝███████╗██║███████╗██║░╚███║░░░██║░░░
 -- ░╚════╝░╚══════╝╚═╝╚══════╝╚═╝░░╚══╝░░░╚═╝░░░
 
-theme.client = {
-	border = {
-		width = dpi(4),
-		color = theme.colors.background.base .. "bb"
-	}
-}
-theme.useless_gap = dpi(3)
+theme.border_width = dpi(3)
+theme.border_color_normal = theme.colors.background.base .. "bb"
+theme.border_color_active = theme.colors.regular.yellow
+theme.useless_gap = dpi(2)
 
 
 

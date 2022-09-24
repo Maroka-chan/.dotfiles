@@ -79,8 +79,6 @@ awful.rules.rules = {
     {
         rule = { },
         properties = {
-            border_width = beautiful.client.border.width,
-            border_color = beautiful.client.border.color,
             focus = awful.client.focus.filter,
             raise = true,
             keys = clientkeys,
