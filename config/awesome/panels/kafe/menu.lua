@@ -93,7 +93,7 @@ panel.create = function(s)
 
     local opacity_timed = rubato.timed {
       intro = 0,
-      duration = 0.15,
+      duration = 0.2,
       awestore_compat = true
     }
 
