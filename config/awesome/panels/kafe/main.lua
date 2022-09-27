@@ -69,15 +69,29 @@ panel.create = function(s)
     -- ===================================================================
 
     -- hide main_panel when client is fullscreen
-    local function change_panel_visibility(client)
+    local function below_on_fullscreen(client)
         if client.screen == s then
             main_panel.ontop = not client.fullscreen
         end
     end
 
+    local function hide_panel(screen)
+        if screen == s then
+            main_panel.visible = false
+        end
+    end
+
+    local function show_panel(screen)
+        if screen == s then
+            main_panel.visible = true
+        end
+    end
+
     -- connect visibility function to relevant signals
-    client.connect_signal("property::fullscreen", change_panel_visibility)
-    client.connect_signal("focus", change_panel_visibility)
+    client.connect_signal("property::fullscreen", below_on_fullscreen)
+    client.connect_signal("focus", below_on_fullscreen)
+    awesome.connect_signal("mainpanel::hide", hide_panel)
+    awesome.connect_signal("mainpanel::show", show_panel)
 
 end
 
