@@ -65,5 +65,9 @@ function helpers.spacer(space, orientation)
     end
 end
 
+function helpers.bool_to_number(value)
+    return value and 1 or 0
+end
+
 
 return helpers
