@@ -3,6 +3,7 @@ local wibox          = require "wibox"
 local awful          = require "awful"
 local helpers        = require "helpers"
 local gears          = require "gears"
+local rubato         = require "lib.rubato"
 local theme          = beautiful.panels.menu
 local dpi            = beautiful.dpi
 
@@ -21,15 +22,13 @@ local panel = {}
 
 panel.create = function(s)
 
-    local menu_panel = awful.wibar({
+    local menu_panel = awful.wibox({
         screen = s,
-        position = "right",
-        height = s.geometry.height - theme.margin * 2,
-        width = theme.width,
-        bg = "#00000000",
+        height = s.geometry.height,
+        width = s.geometry.width,
+        bg = "#000000" .. "bb",
         ontop = true,
-        visible = false,
-        margins = { left = theme.margin, right = theme.margin }
+        visible = false
     })
 
     menu_panel:setup {
@@ -81,12 +80,6 @@ panel.create = function(s)
             widget = wibox.container.margin,
             margins = theme.padding
         },
-        -- The real background color
-        bg = theme.bg_color,
-        -- The real, anti-aliased shape
-        shape = helpers.rrect(theme.corner_radius),
-        border_width = theme.border.width,
-        border_color = theme.border.color,
         widget = wibox.container.background()
     }
 
@@ -95,11 +88,52 @@ panel.create = function(s)
     -- functionality
     -- ===================================================================
 
+    local menu_active = false
+    local selected_tags = {}
+
+    local opacity_timed = rubato.timed {
+      intro = 0,
+      duration = 0.15,
+      awestore_compat = true
+    }
+
+    opacity_timed:subscribe(function(pos)
+        menu_panel.opacity = pos
+    end)
+
+    opacity_timed.started:subscribe(function()
+        if not menu_active then return end
+
+        menu_panel.visible = true
+
+        for _, t in ipairs(s.selected_tags) do
+            selected_tags[#selected_tags+1] = t
+            t.selected = false
+        end
+
+        awesome.emit_signal("mainpanel::hide", s)
+    end)
+
+    opacity_timed.ended:subscribe(function()
+        if menu_active then return end
+
+        menu_panel.visible = false
+
+        for _, t in ipairs(selected_tags) do
+            t.selected = true
+        end
+        selected_tags = {}
+
+        awesome.emit_signal("mainpanel::show", s)
+    end)
+
+
     -- toggle panel
     local function toggle_panel(screen)
-        if screen == s then
-            menu_panel.visible = not menu_panel.visible
-        end
+        if not (screen == s) then return end
+
+        menu_active = not menu_active
+        opacity_timed.target = helpers.bool_to_number(menu_active)
     end
 
     -- connect panel toggle function to relevant signals
