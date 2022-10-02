@@ -6,9 +6,6 @@ local naughty       = require "naughty"
 
 local config_path   = gears.filesystem.get_configuration_dir()
 
--- Keyboard map indicator and switcher
-local mykeyboardlayout = awful.widget.keyboardlayout()
-
 
 clientkeys = ez.keytable {
     ["M-f"] = { function (c)
@@ -66,20 +63,6 @@ local globalkeys    = ez.keytable {
     { description = "Fullscreen screenshot", group = "screenshot" }},
     ["M-S-s"]       = { function () awful.spawn("flameshot gui") end,
     { description = "Selection screenshot", group = "screenshot" }},
-    ["M-S-space"]   = { function ()
-        mykeyboardlayout.next_layout()
-        naughty.notify {
-            title = "Keyboard Layout",
-            text = string.upper(
-                mykeyboardlayout._layout[
-                    ( mykeyboardlayout._current + 1 )
-                    % #mykeyboardlayout._layout + 1
-                ]
-            ),
-            timeout = 1
-        }
-    end,
-    { description = "Change keyboard layout", group = "utility" }},
     ["M-F1"]        = { hotkeys_popup.show_help,
     { description = "Show help", group = "awesome" }},
     ["M-C-Left"]    = { awful.tag.viewprev,

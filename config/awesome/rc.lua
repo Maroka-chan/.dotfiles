@@ -5,13 +5,13 @@ local naughty    = require "naughty"
 local beautiful  = require "beautiful"
 local awful      = require "awful"
 local gears      = require "gears"
+local naughty    = require "naughty"
 
 local config_path = gears.filesystem.get_configuration_dir()
 
 -- ===================================================================
 -- Default Applications
 -- ===================================================================
-
 Apps = {
     terminal = "kitty",
     launcher = "rofi -show drun -display-drun '>'",
@@ -60,6 +60,26 @@ beautiful.init(config_path .. "themes/" .. theme .. "/theme.lua")
 local configuration = "kafe"
 local active_configuration = require("configurations." .. configuration)
 active_configuration.init()
+
+-- ===================================================================
+-- Keyboard Layout
+-- ===================================================================
+
+-- Keyboard map indicator and switcher
+local mykeyboardlayout = awful.widget.keyboardlayout()
+
+mykeyboardlayout:connect_signal("widget::layout_changed", function()
+  naughty.notify {
+      title = "Keyboard Layout",
+      text = string.upper(
+          mykeyboardlayout._layout[
+              ( mykeyboardlayout._current )
+              % #mykeyboardlayout._layout + 1
+          ]
+      ),
+      timeout = 1
+  }
+end)
 
 -- ===================================================================
 -- Keybindings
