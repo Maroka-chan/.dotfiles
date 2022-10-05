@@ -30,10 +30,8 @@ local create = function(args)
         max_value = args.max_value,
         value = 0,
         colors = { args.color },
-        bg = theme.arc.bg_color,
         thickness = theme.arc.thickness * scale,
         start_angle = math.pi,
-        rounded_edge = true,
         widget = wibox.container.arcchart
     }
 
@@ -71,10 +69,6 @@ local create = function(args)
             widget = wibox.container.margin,
             margins = theme.margin * scale
         },
-        -- The real background color
-        bg = theme.bg_color,
-        -- The real, anti-aliased shape
-        shape = helpers.rrect(theme.corner_radius * scale),
         forced_width = args.size,
         forced_height = args.size,
         widget = wibox.container.background()

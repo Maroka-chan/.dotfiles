@@ -192,6 +192,17 @@ theme.widgets.clock = {
 }
 
 -- ===================================================================
+-- Menu Clock
+-- ===================================================================
+
+theme.widgets.menu_clock = {
+	format = "%H:%M",
+	font = theme.fonts.primary,
+	font_size = 48,
+	text_color = theme.colors.typography.text
+}
+
+-- ===================================================================
 -- Date
 -- ===================================================================
 
@@ -209,7 +220,7 @@ theme.widgets.date = {
 
 theme.widgets.usage_arc = {
 	percentage_font = theme.fonts.primary,
-	font_size = 14,
+	font_size = 10,
 	bg_color = theme.colors.background.surface_0,
 	corner_radius = dpi(15),
 	margin = dpi(4),
@@ -228,7 +239,7 @@ theme.widgets.cpu = {
 	icon_font = theme.fonts.icons,
 	font_size = 34,
 	color = theme.colors.regular.teal,
-	size = dpi(110),
+	size = dpi(80),
 	update_interval = 2
 }
 
@@ -241,7 +252,7 @@ theme.widgets.ram = {
 	icon_font = theme.fonts.icons,
 	font_size = 25,
 	color = theme.colors.regular.red,
-	size = dpi(110),
+	size = dpi(80),
 	update_interval = 5
 }
 
