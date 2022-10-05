@@ -12,6 +12,7 @@ local cpu_widget     = require "widgets.cpu"
 local ram_widget     = require "widgets.ram"
 local disk_widget    = require "widgets.disk"
 local weather_widget = require "widgets.weather"
+local clock_widget   = require "widgets.menu_clock"
 
 -- define module table
 local panel = {}
@@ -33,54 +34,43 @@ panel.create = function(s)
 
     menu_panel:setup {
         {
+          {
             {
-                { -- First section
-                    date_widget,
-                    helpers.spacer(25, "vertical"),
-                    { -- Profile section
-                        helpers.mask_image(beautiful.pfp, gears.shape.circle, theme.profile.pfp_size, theme.profile.pfp_size),
-                        helpers.spacer(20, "vertical"),
-                        { -- Text section
-                            -- Text
-                            wibox.widget{
-                                markup = helpers.colorize_text(theme.profile.text.markup, theme.profile.text.color),
-                                font = theme.profile.text.font .. " " .. theme.profile.text.font_size,
-                                align  = 'center',
-                                valign = 'center',
-                                widget = wibox.widget.textbox
-                            },
-                            -- Subtext
-                            wibox.widget{
-                                markup = helpers.colorize_text(theme.profile.subtext.markup, theme.profile.subtext.color),
-                                font = theme.profile.subtext.font .. " " .. theme.profile.subtext.font_size,
-                                align  = 'center',
-                                valign = 'center',
-                                widget = wibox.widget.textbox
-                            },
-                            layout = wibox.layout.flex.vertical,
-                            forced_height = dpi(80)
-                        },
-                        layout = wibox.layout.fixed.vertical
-                    },
-                    layout = wibox.layout.fixed.vertical
-                },
-                { -- Second section
-                    cpu_widget,
-                    ram_widget,
-                    disk_widget,
-                    layout = wibox.layout.align.horizontal,
-                    expand = "none"
-                },
-                { -- Third section
-                    weather_widget,
-                    layout = wibox.layout.fixed.vertical
-                },
-                layout = wibox.layout.fixed.vertical
+              date_widget,
+              halign = "left",
+              valign = "top",
+              widget = wibox.container.place
             },
-            widget = wibox.container.margin,
-            margins = theme.padding
+            nil,
+            {
+              { -- Column 1
+                ram_widget,
+                cpu_widget,
+                nil,
+                layout = wibox.layout.fixed.horizontal
+              },
+              halign = "left",
+              valign = "bottom",
+              widget = wibox.container.place
+            },
+            layout = wibox.layout.flex.vertical
+          },
+          {
+            clock_widget,
+            nil,
+            nil,
+            layout = wibox.layout.flex.vertical
+          },
+          {
+            nil,
+            nil,
+            nil,
+            layout = wibox.layout.flex.vertical
+          },
+          layout = wibox.layout.flex.horizontal
         },
-        widget = wibox.container.background()
+        margins = dpi(15),
+        widget = wibox.container.margin
     }
 
 
