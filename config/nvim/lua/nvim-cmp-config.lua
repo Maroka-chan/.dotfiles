@@ -14,7 +14,7 @@ local configuration = {
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
-      select = true
+      select = false
     }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
@@ -40,7 +40,8 @@ local configuration = {
       { name = 'luasnip' },
       { name = 'buffer' },
       { name = 'path', options = { trailing_slash = true } },
-      { name = 'rg' }
+      { name = 'rg' },
+      { name = 'nvim_lsp_signature_help' }
   })
 }
 
@@ -50,9 +51,10 @@ local funcs = {}
 funcs.setup = function()
   cmp.setup(configuration)
 
-  cmp.setup.cmdline({ '/', '?' }, {
+  cmp.setup.cmdline('/', {
     mapping = cmp.mapping.preset.cmdline(),
     sources = {
+      { name = 'nvim_lsp_document_symbol' },
       { name = 'buffer' }
     }
   })
