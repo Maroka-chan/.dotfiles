@@ -28,7 +28,12 @@ LSP_servers = {
   -- ==== Sumneko Lua ====
   { 'sumneko_lua', settings = sumneko_lua_settings  },
   { 'bashls' },
-  { 'csharp_ls' }
+  { 'csharp_ls' },
+  { 'ansiblels' },
+  { 'dockerls' },
+  { 'gopls' },
+  { 'pyright' },
+  { 'texlab' }
 }
 
 
