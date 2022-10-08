@@ -53,8 +53,13 @@ packer.startup(function(use)
         requires = { 'hrsh7th/cmp-nvim-lsp' }
       }
 
-  -- Code Snippet Engine
-  use { 'L3MON4D3/LuaSnip', tag = "v1.*" }
+  -- Code Snippets
+  use 'rafamadriz/friendly-snippets'
+  use { 'L3MON4D3/LuaSnip', tag = "v1.*",
+        config = function ()
+          require('luasnip.loaders.from_vscode').lazy_load()
+        end
+      }
 
   -- Code Completion
   use { 'hrsh7th/nvim-cmp',
@@ -69,12 +74,31 @@ packer.startup(function(use)
         }
       }
 
-  -- Fuzzy Finder
-  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0',
+  -- Treesitter
+  use { 'nvim-treesitter/nvim-treesitter',
+        config = function () require('nvim-treesitter-config').setup() end,
+        run = ':TSUpdate',
         requires = {
-          { 'nvim-lua/plenary.nvim' },
-          { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+          { 'nvim-treesitter/nvim-treesitter-context',
+            config = function () require('nvim-treesitter-context-config').setup() end
+          },
+          { 'nvim-treesitter/nvim-treesitter-refactor' }
         }
       }
+
+  -- Fuzzy Finder
+  use { 'nvim-telescope/telescope.nvim', tag = '0.1.0',
+        config = function () require('telescope-config').setup_keybindings() end,
+        requires = {
+          { 'nvim-lua/plenary.nvim' },
+          { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+        }
+      }
+
+  -- Effects
+  use {
+    "folke/twilight.nvim",
+    config = function() require("twilight-config").setup() end
+  }
 
 end)
