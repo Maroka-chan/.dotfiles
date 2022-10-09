@@ -1,29 +1,34 @@
 local knap = require('knap')
 
-local pdflatex_flags = "-synctex=1 -halt-on-error -interaction=batchmode"
-local pdflatex_default = "pdflatex " .. pdflatex_flags .. " %docroot%"
-local pdflatex_shell_escape = "pdflatex " .. pdflatex_flags .. " -shell-escape" .. " %docroot%"
+local _engine = "tectonic"
+local _flags = "--synctex --keep-logs"
+
+local compose_cmd = function(engine, flags)
+  return string.format("%s %s ", engine, flags) .. "%docroot%"
+end
+
 
 local gknapsettings = {
     texoutputext = "pdf",
-    textopdf = pdflatex_default,
+    textopdf = compose_cmd(_engine, _flags),
     textopdfviewerlaunch = "zathura --synctex-editor-command 'nvim --headless -es --cmd \"lua require('\"'\"'knaphelper'\"'\"').relayjump('\"'\"'%servername%'\"'\"','\"'\"'%{input}'\"'\"',%{line},0)\"' %outputfile%",
     textopdfviewerrefresh = "none",
-    textopdfforwardjump = "zathura --synctex-forward=%line%:%column%:%srcfile% %outputfile%"
+    textopdfforwardjump = "zathura --synctex-forward=%line%:%column%:%srcfile% %outputfile%",
+    textopdfshorterror = "A=%outputfile% ; LOGFILE=\"${A%.pdf}.log\" ; rg -N ! \"$LOGFILE\" 2>&1 | head -n 1",
 }
 
 
 local shell_escape_enabled = false
 
 local toggle_shell_escape = function()
-  if shell_escape_enabled then
-    gknapsettings.textopdf = pdflatex_default
-    print("-shell-escape disabled")
-  else
-    gknapsettings.textopdf = pdflatex_shell_escape
-    print("-shell-escape enabled")
-  end
+  local flags = _flags
 
+  if not shell_escape_enabled then
+    flags = string.format("%s %s", flags, "-Z shell-escape-cwd=$(pwd)")
+    print("shell-escape enabled")
+  else print("shell-escape disabled") end
+
+  gknapsettings.textopdf = compose_cmd(_engine, flags)
   local bsettings = vim.b.knap_settings or {}
   bsettings = vim.tbl_extend("keep", gknapsettings, bsettings)
   vim.b.knap_settings = bsettings
