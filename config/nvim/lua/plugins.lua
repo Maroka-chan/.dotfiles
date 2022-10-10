@@ -54,6 +54,16 @@ packer.startup(function(use)
     requires = { 'hrsh7th/cmp-nvim-lsp' }
   }
 
+  -- Folding
+  use { 'kevinhwang91/nvim-ufo',
+    config = function()
+      local config = require('nvim-ufo-config')
+      config.setup()
+      config.setup_keybindings()
+    end,
+    requires = 'kevinhwang91/promise-async'
+  }
+
   -- Code Snippets
   use 'rafamadriz/friendly-snippets'
   use { 'L3MON4D3/LuaSnip', tag = "v1.*",

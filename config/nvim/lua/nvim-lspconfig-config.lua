@@ -24,7 +24,7 @@ local sumneko_lua_settings = {
 
 
 -- Language Protocol Servers to Enable
-LSP_servers = {
+local LSP_servers = {
   -- ==== Sumneko Lua ====
   { 'sumneko_lua', settings = sumneko_lua_settings  },
   { 'bashls' },
@@ -41,6 +41,13 @@ local funcs = {}
 
 funcs.setup = function ()
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+  -- For nvim-ufo
+  capabilities.textDocument.FoldingRange = {
+    dynamicRegistration = false,
+    lineFoldingOnly = true
+  }
+
   for _, lsp in ipairs(LSP_servers) do
     lspconfig[lsp[1]].setup {
       capabilities = capabilities,
