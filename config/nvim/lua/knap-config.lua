@@ -47,19 +47,19 @@ funcs.setup_keybindings = function()
   local kmap = vim.keymap.set
 
   -- F12 toggles wether the -shell-escape flag is used
-  kmap('n','<F12>', function() toggle_shell_escape() end, { noremap = true })
+  kmap('n','<leader>ls', function() toggle_shell_escape() end, { noremap = true })
 
   -- F5 processes the document once, and refreshes the view
-  kmap('n','<F5>', function() knap.process_once() end, { noremap = true })
+  kmap('n','<leader>ll', function() knap.process_once() end, { noremap = true })
 
   -- F6 closes the viewer application, and allows settings to be reset
-  kmap('n','<F6>', function() knap.close_viewer() end, { noremap = true })
+  kmap('n','<leader>lc', function() knap.close_viewer() end, { noremap = true })
 
   -- F7 toggles the auto-processing on and off
-  kmap('n','<F7>', function() knap.toggle_autopreviewing() end, { noremap = true })
+  kmap('n','<leader>lk', function() knap.toggle_autopreviewing() end, { noremap = true })
 
   -- F8 invokes a SyncTeX forward search, or similar, where appropriate
-  kmap('n','<F8>', function() knap.forward_jump() end, { noremap = true })
+  kmap('n','<leader>lg', function() knap.forward_jump() end, { noremap = true })
 end
 
 
