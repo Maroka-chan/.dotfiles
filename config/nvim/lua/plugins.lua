@@ -67,9 +67,7 @@ packer.startup(function(use)
   -- Code Snippets
   use 'rafamadriz/friendly-snippets'
   use { 'L3MON4D3/LuaSnip', tag = "v1.*",
-    config = function ()
-      require('luasnip.loaders.from_vscode').lazy_load()
-    end
+    config = function() require('luasnip-config').setup() end
   }
 
   -- Code Completion
