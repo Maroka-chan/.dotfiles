@@ -23,7 +23,7 @@ local sumneko_lua_settings = {
 }
 
 
--- Language Protocol Servers to Enable
+-- Language Server Protocols to Enable
 local LSP_servers = {
   -- ==== Sumneko Lua ====
   { 'sumneko_lua', settings = sumneko_lua_settings  },
@@ -33,14 +33,15 @@ local LSP_servers = {
   { 'dockerls' },
   { 'gopls' },
   { 'pyright' },
-  { 'texlab' }
+  { 'texlab' },
+  { 'clangd' }
 }
 
 
 local funcs = {}
 
 funcs.setup = function ()
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
   -- For nvim-ufo
   capabilities.textDocument.FoldingRange = {
@@ -49,10 +50,15 @@ funcs.setup = function ()
   }
 
   for _, lsp in ipairs(LSP_servers) do
-    lspconfig[lsp[1]].setup {
-      capabilities = capabilities,
-      settings = lsp.settings
+    local conf = {
+      capabilities = capabilities
     }
+
+    if lsp.settings ~= nil then
+      conf.settings = lsp.settings
+    end
+
+    lspconfig[lsp[1]].setup(conf)
   end
 end
 
