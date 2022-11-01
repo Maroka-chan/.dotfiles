@@ -40,7 +40,7 @@ local configuration = {
       { name = 'luasnip' },
       { name = 'buffer' },
       { name = 'path', options = { trailing_slash = true } },
-      { name = 'rg' },
+      { name = 'rg', keyword_length = 3 },
       { name = 'nvim_lsp_signature_help' }
   })
 }
