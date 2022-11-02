@@ -1,14 +1,3 @@
-local packer = require('packer')
-
--- Recompile if plugins.lua has changed
-vim.cmd([[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-  augroup end
-]])
-
-
 local ensure_packer = function()
   local fn = vim.fn
   local install_path = fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -21,6 +10,17 @@ local ensure_packer = function()
 end
 
 local packer_bootstrap = ensure_packer()
+
+
+local packer = require('packer')
+
+-- Recompile if plugins.lua has changed
+vim.cmd([[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
+]])
 
 
 packer.startup(function(use)
