@@ -1,0 +1,73 @@
+(deflisten brightness `inotifywait --event close_write --monitor /sys/class/backlight/intel_backlight/brightness | while read; do cat /sys/class/backlight/intel_backlight/brightness; done`)
+
+(deflisten volume :initial 0.0 `scripts/volume_monitor.sh`)
+
+(defwidget bar []
+  (centerbox :orientation "h"
+    (workspaces)
+    (box)
+    (sidestuff)))
+
+(defwidget sidestuff []
+  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
+    (metric :label "🔊"
+            :value {volume * 100}
+	    :min 0
+	    :max 101
+            :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%")
+    (metric :label ""
+            :value {EWW_RAM.used_mem_perc}
+	    :min 0
+	    :max 101
+            :onchange "")
+    (metric :label "💾"
+            :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+	    :min 0
+	    :max 101
+            :onchange "")
+    time))
+
+(defwidget workspaces []
+  (box :class "workspaces"
+       :orientation "h"
+       :space-evenly true
+       :halign "start"
+       :spacing 10
+    (button :onclick "wmctrl -s 0" 1)
+    (button :onclick "wmctrl -s 1" 2)
+    (button :onclick "wmctrl -s 2" 3)
+    (button :onclick "wmctrl -s 3" 4)
+    (button :onclick "wmctrl -s 4" 5)
+    (button :onclick "wmctrl -s 5" 6)
+    (button :onclick "wmctrl -s 6" 7)
+    (button :onclick "wmctrl -s 7" 8)
+    (button :onclick "wmctrl -s 8" 9)))
+
+
+(defwidget metric [label value onchange min max]
+  (box :orientation "h"
+       :class "metric"
+       :space-evenly false
+    (box :class "label" label)
+    (scale :min min
+           :max max
+           :active {onchange != ""}
+           :value value
+           :onchange onchange)))
+
+
+
+
+(defpoll time :interval "10s"
+  "date '+%H:%M %b %d, %Y'")
+
+(defwindow bar
+  :monitor 0
+  :exclusive true
+  :geometry (geometry :x "0%"
+                      :y "0%"
+                      :width "100%"
+                      :height "30px"
+                      :anchor "top center")
+  (bar))
+
