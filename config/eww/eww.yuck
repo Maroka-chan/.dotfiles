@@ -1,6 +1,6 @@
 (deflisten brightness `inotifywait --event close_write --monitor /sys/class/backlight/intel_backlight/brightness | while read; do cat /sys/class/backlight/intel_backlight/brightness; done`)
-
 (deflisten volume :initial 0.0 `scripts/volume_monitor.sh`)
+(deflisten workspaces `scripts/hyprland_events.sh workspaces`)
 
 (defwidget bar []
   (centerbox :orientation "h"
@@ -10,18 +10,8 @@
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-    (metric :label "🔊"
-            :value {volume * 100}
-	    :min 0
-	    :max 101
-            :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%")
-    (metric :label ""
-            :value {EWW_RAM.used_mem_perc}
-	    :min 0
-	    :max 101
-            :onchange "")
-    (metric :label "💾"
-            :value {round((1 - (EWW_DISK["/"].free / EWW_DISK["/"].total)) * 100, 0)}
+    (metric :label ""
+            :value {EWW_BATTERY.BAT0.capacity}
 	    :min 0
 	    :max 101
             :onchange "")
@@ -29,20 +19,39 @@
 
 (defwidget workspaces []
   (box :class "workspaces"
-       :orientation "h"
-       :space-evenly true
-       :halign "start"
-       :spacing 10
-    (button :onclick "wmctrl -s 0" 1)
-    (button :onclick "wmctrl -s 1" 2)
-    (button :onclick "wmctrl -s 2" 3)
-    (button :onclick "wmctrl -s 3" 4)
-    (button :onclick "wmctrl -s 4" 5)
-    (button :onclick "wmctrl -s 5" 6)
-    (button :onclick "wmctrl -s 6" 7)
-    (button :onclick "wmctrl -s 7" 8)
-    (button :onclick "wmctrl -s 8" 9)))
-
+       :orientation "v"
+       :space-evenly false
+       :spacing 0
+       :valign "center"
+    (box :orientation "h"
+         :space-evenly true
+         :halign "start"
+         :spacing 8
+      (for workspace in {workspaces.workspaces}
+        (button
+          :class "workspace_btn"
+	  :onclick "hyprctl dispatch workspace ${workspace.id}"
+	  :valign "center"
+          {workspace.id}
+        )
+      )
+    )
+    (box :orientation "h"
+         :space-evenly true
+         :halign "start"
+	 :valign "start"
+         :spacing 8
+      (for workspace in {workspaces.workspaces}
+        (box :class "workspace_status ${workspace.id == workspaces.active ? "active" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+	     :valign "center"
+	     :halign "center"
+	     :height 0
+	     :width 0
+	)
+      )
+    )
+  )
+)
 
 (defwidget metric [label value onchange min max]
   (box :orientation "h"
