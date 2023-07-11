@@ -4,7 +4,7 @@
 
 //Global Styles
 .bar {
-  background-color: #381d2e;
+  background-color: #111827;
   color: #b0b4bc;
   padding: 10px;
 }
@@ -15,44 +15,43 @@
 
 .workspace_btn {
   all: unset;
-  color: #fefefd;
+  color: #e0def4;
   min-width: 15px;
   font-size: medium;
-}
-
-.workspace_btn:hover {
-  background-color: #fca592;
-  color: #280e1c;
+  font-family: CaskaydiaCove NFP SemiBold;
 }
 
 .workspace_status {
   all: unset;
 
   &.occupied {
-    background-color: #fca592;
+    background-color: #BFDBFE;
     border-radius: 20px;
     min-width: 15px;
     min-height: 3px;
   }
 
   &.active {
-    background-color: #fca592;
+    background-color: #BFDBFE;
+    margin: 0px 5px 0px 5px;
     min-width: 5px;
     min-height: 5px;
     border-radius: 100%;
   }
 }
 
-// Styles on classes (see eww.yuck for more information)
-
 .sidestuff slider {
   all: unset;
   color: #ffd5cd;
 }
 
+.battery {
+  all: unset;
+}
+
 .metric scale trough highlight {
   all: unset;
-  background-color: #D35D6E;
+  background-color: #4ADE80;
   color: #000000;
   border-radius: 10px;
 }

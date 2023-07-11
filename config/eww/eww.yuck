@@ -1,20 +1,28 @@
 (deflisten brightness `inotifywait --event close_write --monitor /sys/class/backlight/intel_backlight/brightness | while read; do cat /sys/class/backlight/intel_backlight/brightness; done`)
-(deflisten volume :initial 0.0 `scripts/volume_monitor.sh`)
-(deflisten workspaces `scripts/hyprland_events.sh workspaces`)
+(deflisten volume :initial 0.0 `scripts/volume_monitor.sh get-volume`)
+(deflisten volume_muted :initial 0.0 `scripts/volume_monitor.sh get-muted`)
+(deflisten workspaces `scripts/hyprland-events 10`)
 
 (defwidget bar []
   (centerbox :orientation "h"
-    (workspaces)
-    (box)
-    (sidestuff)))
+    (box :class "left" :halign "start" :hexpand false :vexpand false (workspaces))
+    (box :class "center")
+    (box :class "right" :halign "end" :hexpand false :vexpand false (sidestuff))
+    ))
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-    (metric :label ""
-            :value {EWW_BATTERY.BAT0.capacity}
+    (box :class "battery" :orientation "h" :halign "center"
+	(metric :label "${volume_muted == false ? "" : ""}"
+            :value {volume * 100}
 	    :min 0
 	    :max 101
             :onchange "")
+    	(metric :label ""
+            :value {EWW_BATTERY.BAT0.capacity}
+	    :min 0
+	    :max 101
+            :onchange ""))
     time))
 
 (defwidget workspaces []
@@ -60,6 +68,7 @@
     (box :class "label" label)
     (scale :min min
            :max max
+           :tooltip "${value}%"
            :active {onchange != ""}
            :value value
            :onchange onchange)))
@@ -79,4 +88,3 @@
                       :height "30px"
                       :anchor "top center")
   (bar))
-
