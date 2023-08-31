@@ -1,4 +1,4 @@
-(deflisten brightness `inotifywait --event close_write --monitor /sys/class/backlight/intel_backlight/brightness | while read; do cat /sys/class/backlight/intel_backlight/brightness; done`)
+(deflisten brightness `scripts/brightness_monitor.sh`)
 (deflisten volume :initial 0.0 `scripts/volume_monitor.sh get-volume`)
 (deflisten volume_muted :initial 0.0 `scripts/volume_monitor.sh get-muted`)
 (deflisten workspaces `scripts/hyprland-events 10`)
@@ -6,24 +6,38 @@
 (defwidget bar []
   (centerbox :orientation "h"
     (box :class "left" :halign "start" :hexpand false :vexpand false (workspaces))
-    (box :class "center")
+    (box :class "center" (radio))
     (box :class "right" :halign "end" :hexpand false :vexpand false (sidestuff))
     ))
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
     (box :class "battery" :orientation "h" :halign "center"
+	(metric :label ""
+            :value {brightness}
+	    :min 0
+	    :max 19394
+            :onchange "")
 	(metric :label "${volume_muted == false ? "" : ""}"
             :value {volume * 100}
 	    :min 0
 	    :max 101
             :onchange "")
-    	(metric :label ""
+	(metric :label ""
             :value {EWW_BATTERY.BAT0.capacity}
 	    :min 0
 	    :max 101
-            :onchange ""))
+            :onchange "")
+    )
     time))
+
+(defwidget radio []
+  (button
+    :onclick `scripts/radio/jpopsuki.sh`
+    :valign "center"
+    "jpopsuki"
+  )
+)
 
 (defwidget workspaces []
   (box :class "workspaces"
