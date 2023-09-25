@@ -3,12 +3,48 @@
 (deflisten volume_muted :initial 0.0 `scripts/volume_monitor.sh get-muted`)
 (deflisten workspaces `scripts/hyprland-events 10`)
 
+(defvar isMusicPlaying false)
+
+(defvar jpopsuki_radio "http://jpopsuki.fm:8000/autodj.m3u")
+(defvar listen_moe_radio "https://listen.moe/opus")
+(defvar activeRadio "http://jpopsuki.fm:8000/autodj.m3u")
+(defvar currentRadio "Jpopsuki")
+
 (defwidget bar []
   (centerbox :orientation "h"
     (box :class "left" :halign "start" :hexpand false :vexpand false (workspaces))
-    (box :class "center" (radio))
+    (box :class "center" (musicplayer_controls))
     (box :class "right" :halign "end" :hexpand false :vexpand false (sidestuff))
     ))
+
+(defwidget musicplayer_controls []
+  (box :orientation "h"
+    (play_pause)
+    (eventbox :cursor "pointer"
+      (button :class "radio_list_btn" 
+        :onclick `eww open --toggle radio_picker`
+        {currentRadio}
+      )
+    )
+  )
+)
+
+(defwidget radio_list []
+  (box :orientation "v"
+    (eventbox :class "playpause" :cursor "pointer"
+      (button
+        :onclick `eww update activeRadio=${jpopsuki_radio} && eww update currentRadio=Jpopsuki && scripts/radio/radio.sh $(eww get activeRadio)`
+        "Jpopsuki"
+      )
+    )
+    (eventbox :class "playpause" :cursor "pointer"
+      (button
+        :onclick `eww update activeRadio=${listen_moe_radio} && eww update currentRadio=Listen.moe && scripts/radio/radio.sh $(eww get activeRadio)`
+        "Listen.moe"
+      )
+    )
+  )
+)
 
 (defwidget sidestuff []
   (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
@@ -31,11 +67,19 @@
     )
     time))
 
-(defwidget radio []
-  (button
-    :onclick `scripts/radio/jpopsuki.sh`
-    :valign "center"
-    "jpopsuki"
+(defwidget play_pause []
+  (eventbox
+       :orientation "h"
+       :space-evenly false
+       :spacing 0
+       :halign "center"
+       :cursor "pointer"
+    (button
+      :class "playpause"
+      :onclick `scripts/radio/radio.sh ${activeRadio}`
+      :valign "center"
+      {isMusicPlaying ? "󰏤" : "󰐊"}
+    )
   )
 )
 
@@ -75,6 +119,15 @@
   )
 )
 
+(defwidget percentage [icon value]
+  (box :orientation "h"
+       :class "percentage"
+       :space-evenly false
+    (box icon)
+    (label :text "${value}%")
+  )
+)
+
 (defwidget metric [label value onchange min max]
   (box :orientation "h"
        :class "metric"
@@ -102,3 +155,13 @@
                       :height "30px"
                       :anchor "top center")
   (bar))
+
+(defwindow radio_picker
+  :monitor 0
+  :exclusive false
+  :geometry (geometry :x "0%"
+                      :y "0%"
+		      :width "120px"
+		      :height "40px"
+		      :anchor "top center")
+  (radio_list))

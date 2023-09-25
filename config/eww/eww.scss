@@ -9,6 +9,35 @@
   padding: 10px;
 }
 
+.musicplayer {
+  background-color: #111827;
+  font-family: Material Design Icons;
+}
+
+.playpause {
+  min-width: 30px;
+  min-height: 30px;
+}
+
+.playpause:hover {
+  background-color: #0b101a;
+}
+
+.radio_list_btn {
+  min-width: 50px;
+  min-height: 30px;
+}
+
+.radio_list_btn:hover {
+  background-color: #0b101a;
+}
+
+.radio_picker {
+  background-color: #111827;
+  color: #b0b4bc;
+  padding: 10px;
+}
+
 .workspaces {
   margin: 0 0 0 10px;
 }
@@ -26,17 +55,17 @@
 
   &.occupied {
     background-color: #BFDBFE;
-    border-radius: 20px;
-    min-width: 15px;
-    min-height: 3px;
+    margin: 0px 0px 0px 0px;
+    min-width: 5px;
+    min-height: 5px;
+    border-radius: 100%;
   }
 
   &.active {
     background-color: #BFDBFE;
-    margin: 0px 5px 0px 5px;
-    min-width: 5px;
-    min-height: 5px;
-    border-radius: 100%;
+    border-radius: 20px;
+    min-width: 15px;
+    min-height: 3px;
   }
 }
 
