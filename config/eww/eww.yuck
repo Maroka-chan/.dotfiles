@@ -1,71 +1,74 @@
 (deflisten brightness `scripts/brightness_monitor.sh`)
 (deflisten volume :initial 0.0 `scripts/volume_monitor.sh get-volume`)
 (deflisten volume_muted :initial 0.0 `scripts/volume_monitor.sh get-muted`)
-(deflisten workspaces `scripts/hyprland-events 10`)
+(deflisten cava `scripts/cava/cava-pipe.sh`)
+(deflisten workspaces `scripts/hyprland-events 9`)
+(deflisten radio `scripts/radio/radio_handler.sh`)
 
+(defvar radiopipe "/tmp/eww/radio/pipe")
+(defvar radio_reveal false)
 (defvar isMusicPlaying false)
-
-(defvar jpopsuki_radio "http://jpopsuki.fm:8000/autodj.m3u")
-(defvar listen_moe_radio "https://listen.moe/opus")
-(defvar activeRadio "http://jpopsuki.fm:8000/autodj.m3u")
-(defvar currentRadio "Jpopsuki")
+(defvar activeRadio "JPopsuki")
+(defvar radios '{
+   "JPopsuki": "http://jpopsuki.fm:8000/autodj.m3u",
+   "Listen.Moe": "https://listen.moe/stream"
+}')
 
 (defwidget bar []
-  (centerbox :orientation "h"
-    (box :class "left" :halign "start" :hexpand false :vexpand false (workspaces))
-    (box :class "center" (musicplayer_controls))
-    (box :class "right" :halign "end" :hexpand false :vexpand false (sidestuff))
-    ))
+  (centerbox :orientation "h" :class "mainbar"
+    (box :class "left" (left))
+    (box :class "center" :halign "start" :hexpand false :vexpand false (center))
+    (box :class "right" :halign "end" :hexpand false :vexpand false (right))
+  )
+)
+
+(defwidget left []
+  (box :class "container" :orientation "h" :halign "start" :valign "center"
+    (musicplayer_controls)
+    (audio_visualizer)
+  )
+)
+
+(defwidget center []
+  (workspaces)
+)
+
+
+(defwidget right []
+  (box :orientation "h" :space-evenly false :spacing 10
+    (metric :label ""
+            :value {brightness}
+            :min 0
+            :max 19394
+            :onchange "")
+    (metric :label "${volume_muted == false ? "" : ""}"
+            :value {volume * 100}
+            :min 0
+            :max 101
+            :onchange "")
+    (image  :path "../../icons/battery/battery-${round(EWW_BATTERY.BAT0.capacity / 10, 0) * 10}.svg"
+            :image-height 15
+            :class "battery"
+            :tooltip "${EWW_BATTERY.BAT0.capacity}%"
+    )
+  )
+)
+
+(defwidget audio_visualizer []
+  (label :text "${cava}" :class "text")
+)
 
 (defwidget musicplayer_controls []
-  (box :orientation "h"
+  (box :orientation "h" :halign "start" :valign "center" :space-evenly false :spacing 5
     (play_pause)
     (eventbox :cursor "pointer"
       (button :class "radio_list_btn" 
-        :onclick `eww open --toggle radio_picker`
-        {currentRadio}
+        :onclick `eww update radio_reveal=${!radio_reveal}`
+        {captures(radio, "icy-title: (.+)|Title: (.+)")[0]?.[1]}
       )
     )
   )
 )
-
-(defwidget radio_list []
-  (box :orientation "v"
-    (eventbox :class "playpause" :cursor "pointer"
-      (button
-        :onclick `eww update activeRadio=${jpopsuki_radio} && eww update currentRadio=Jpopsuki && scripts/radio/radio.sh $(eww get activeRadio)`
-        "Jpopsuki"
-      )
-    )
-    (eventbox :class "playpause" :cursor "pointer"
-      (button
-        :onclick `eww update activeRadio=${listen_moe_radio} && eww update currentRadio=Listen.moe && scripts/radio/radio.sh $(eww get activeRadio)`
-        "Listen.moe"
-      )
-    )
-  )
-)
-
-(defwidget sidestuff []
-  (box :class "sidestuff" :orientation "h" :space-evenly false :halign "end"
-    (box :class "battery" :orientation "h" :halign "center"
-	(metric :label ""
-            :value {brightness}
-	    :min 0
-	    :max 19394
-            :onchange "")
-	(metric :label "${volume_muted == false ? "" : ""}"
-            :value {volume * 100}
-	    :min 0
-	    :max 101
-            :onchange "")
-	(metric :label ""
-            :value {EWW_BATTERY.BAT0.capacity}
-	    :min 0
-	    :max 101
-            :onchange "")
-    )
-    time))
 
 (defwidget play_pause []
   (eventbox
@@ -76,7 +79,7 @@
        :cursor "pointer"
     (button
       :class "playpause"
-      :onclick `scripts/radio/radio.sh ${activeRadio}`
+      :onclick {isMusicPlaying ? `echo "stop" >${radiopipe}` : `echo "play ${radios[activeRadio]}" >${radiopipe}`}
       :valign "center"
       {isMusicPlaying ? "󰏤" : "󰐊"}
     )
@@ -84,47 +87,31 @@
 )
 
 (defwidget workspaces []
-  (box :class "workspaces"
-       :orientation "v"
-       :space-evenly false
-       :spacing 0
+  (box :orientation "h"
+       :halign "center"
        :valign "center"
-    (box :orientation "h"
-         :space-evenly true
-         :halign "start"
-         :spacing 8
-      (for workspace in {workspaces.workspaces}
-        (button
-          :class "workspace_btn"
-	  :onclick "hyprctl dispatch workspace ${workspace.id}"
-	  :valign "center"
-          {workspace.id}
-        )
-      )
-    )
-    (box :orientation "h"
-         :space-evenly true
-         :halign "start"
-	 :valign "start"
-         :spacing 8
-      (for workspace in {workspaces.workspaces}
-        (box :class "workspace_status ${workspace.id == workspaces.active ? "active" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
-	     :valign "center"
-	     :halign "center"
-	     :height 0
-	     :width 0
-	)
+       :class "container"
+    (for workspace in {workspaces.workspaces}
+      (box :class "workspace_status ${workspace.id == workspaces.active ? "active" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
+         :valign "center"
+         :halign "center"
+         :height 0
+         :width 0
       )
     )
   )
 )
 
-(defwidget percentage [icon value]
-  (box :orientation "h"
-       :class "percentage"
-       :space-evenly false
-    (box icon)
-    (label :text "${value}%")
+(defwidget radio_list []
+  (box :orientation "v" :class "radio_list"
+    (for radio in {jq(radios, 'keys')}
+      (eventbox :class "playpause" :cursor "pointer"
+        (button
+          :onclick `eww update activeRadio=${radio} && echo "play ${radios[radio]}" >${radiopipe}`
+          "${radio}"
+        )
+      )
+    )
   )
 )
 
@@ -138,30 +125,37 @@
            :tooltip "${value}%"
            :active {onchange != ""}
            :value value
-           :onchange onchange)))
+           :onchange onchange
+    )
+  )
+)
 
-
-
-
-(defpoll time :interval "10s"
-  "date '+%H:%M %b %d, %Y'")
-
-(defwindow bar
+(defwindow statusbar
   :monitor 0
   :exclusive true
   :geometry (geometry :x "0%"
                       :y "0%"
                       :width "100%"
                       :height "30px"
-                      :anchor "top center")
-  (bar))
+                      :anchor "bottom center")
+  (bar)
+)
 
-(defwindow radio_picker
+(defwindow radio
   :monitor 0
   :exclusive false
+  :namespace "radio"
   :geometry (geometry :x "0%"
                       :y "0%"
-		      :width "120px"
-		      :height "40px"
-		      :anchor "top center")
-  (radio_list))
+                      :width "0"
+                      :height "0"
+                      :anchor "bottom left")
+  (expander :expanded true
+    (revealer
+      :reveal radio_reveal
+      :transition "slideup"
+      :duration "350ms"
+      (radio_list)
+    )
+  )
+)

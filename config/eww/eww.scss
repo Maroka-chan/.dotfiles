@@ -1,12 +1,52 @@
+$surface1:  #45475a;
+$text:      #cdd6f4;
+$base:      #1e1e2e;
+$crust:     #11111b;
+$blue:      #89b4fa;
+$yellow:    #f9e2af;
+
 * {
   all: unset; //Unsets everything so you can style everything from scratch
 }
 
 //Global Styles
-.bar {
-  background-color: #111827;
-  color: #b0b4bc;
-  padding: 10px;
+.mainbar {
+  background-color: rgba($crust, .9);
+}
+
+.radio_list {
+  background-color: $base;
+}
+
+.container {
+  background-color: $base;
+  min-height: 21px;
+  padding: 0 10px 0 10px;
+  border-radius: 3px;
+}
+
+.text {
+  color: $text;
+}
+
+.workspace_status {
+  all: unset;
+  min-width: 12px;
+  min-height: 7px;
+  border-radius: 20px;
+
+  &.occupied {
+    background-color: $text;
+  }
+
+  &.active {
+    background-color: $blue;
+    min-width: 28px;
+  }
+
+  &.empty {
+    background-color: $surface1;
+  }
 }
 
 .musicplayer {
@@ -38,10 +78,6 @@
   padding: 10px;
 }
 
-.workspaces {
-  margin: 0 0 0 10px;
-}
-
 .workspace_btn {
   all: unset;
   color: #e0def4;
@@ -50,49 +86,24 @@
   font-family: CaskaydiaCove NFP SemiBold;
 }
 
-.workspace_status {
-  all: unset;
-
-  &.occupied {
-    background-color: #BFDBFE;
-    margin: 0px 0px 0px 0px;
-    min-width: 5px;
-    min-height: 5px;
-    border-radius: 100%;
-  }
-
-  &.active {
-    background-color: #BFDBFE;
-    border-radius: 20px;
-    min-width: 15px;
-    min-height: 3px;
-  }
-}
-
-.sidestuff slider {
-  all: unset;
-  color: #ffd5cd;
-}
-
 .battery {
   all: unset;
 }
 
 .metric scale trough highlight {
   all: unset;
-  background-color: #4ADE80;
+  background-color: $yellow;
   color: #000000;
   border-radius: 10px;
 }
 
 .metric scale trough {
   all: unset;
-  background-color: #4e4e4e;
-  border-radius: 50px;
+  background-color: $surface1;
+  border-radius: 4px;
   min-height: 8px;
   min-width: 60px;
-  margin-left: 10px;
-  margin-right: 20px;
+  margin-left: 12px;
 }
 
 .label {
