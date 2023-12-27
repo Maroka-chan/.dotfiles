@@ -16,21 +16,32 @@
 
 (defwidget bar []
   (centerbox :orientation "h" :class "mainbar"
-    (box :class "left" (left))
-    (box :class "center" :halign "start" :hexpand false :vexpand false (center))
-    (box :class "right" :halign "end" :hexpand false :vexpand false (right))
+    (box :class "left" :halign "start" (left))
+    (box :class "center" :halign "center" (center))
+    (box :class "right" :halign "end" (right))
   )
 )
 
 (defwidget left []
-  (box :class "container" :orientation "h" :halign "start" :valign "center"
+  (box :class "container" :orientation "h" :halign "start" :valign "center" :space-evenly false
+    (eventbox :cursor "pointer"
+      (button
+        :class "radio_btn"
+        :valign "center"
+        :onclick `eww update radio_reveal=${!radio_reveal}`
+        {"󰐹"}
+      )
+    )
     (musicplayer_controls)
-    (audio_visualizer)
   )
 )
 
 (defwidget center []
-  (workspaces)
+  (box :orientation "h" :space-evenly false
+    (label :text {substring(cava, 0, 8)} :class "text")
+    (workspaces)
+    (label :text {substring(cava, 8, 8)} :class "text")
+  )
 )
 
 
@@ -54,19 +65,10 @@
   )
 )
 
-(defwidget audio_visualizer []
-  (label :text "${cava}" :class "text")
-)
-
 (defwidget musicplayer_controls []
   (box :orientation "h" :halign "start" :valign "center" :space-evenly false :spacing 5
     (play_pause)
-    (eventbox :cursor "pointer"
-      (button :class "radio_list_btn" 
-        :onclick `eww update radio_reveal=${!radio_reveal}`
-        {captures(radio, "icy-title: (.+)|Title: (.+)")[0]?.[1]}
-      )
-    )
+    (label :text {captures(radio, "icy-title: (.+)|Title: (.+)")[0]?.[1] ?: ""})
   )
 )
 
@@ -90,7 +92,7 @@
   (box :orientation "h"
        :halign "center"
        :valign "center"
-       :class "container"
+       :class "container workspaces"
     (for workspace in {workspaces.workspaces}
       (box :class "workspace_status ${workspace.id == workspaces.active ? "active" : ""} ${workspace.windows > 0 ? "occupied" : "empty"}"
          :valign "center"
@@ -106,7 +108,7 @@
   (box :orientation "v" :class "radio_list"
     (for radio in {jq(radios, 'keys')}
       (eventbox :class "playpause" :cursor "pointer"
-        (button
+        (button :class "radio_item ${radio == activeRadio ? "active" : ""}"
           :onclick `eww update activeRadio=${radio} && echo "play ${radios[radio]}" >${radiopipe}`
           "${radio}"
         )

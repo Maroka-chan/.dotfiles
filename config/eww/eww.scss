@@ -21,12 +21,24 @@ $yellow:    #f9e2af;
 .container {
   background-color: $base;
   min-height: 21px;
-  padding: 0 10px 0 10px;
   border-radius: 3px;
 }
 
 .text {
   color: $text;
+}
+
+.radio_item {
+  all: unset;
+  color: white;
+
+  &.active {
+    color: $blue;
+  }
+}
+
+.workspaces {
+  padding: 0 10px 0 10px;
 }
 
 .workspace_status {
@@ -49,41 +61,15 @@ $yellow:    #f9e2af;
   }
 }
 
-.musicplayer {
-  background-color: #111827;
-  font-family: Material Design Icons;
-}
-
 .playpause {
   min-width: 30px;
   min-height: 30px;
+  padding-left: 0.8em;
+  padding-right: 0.6em;
 }
 
 .playpause:hover {
   background-color: #0b101a;
-}
-
-.radio_list_btn {
-  min-width: 50px;
-  min-height: 30px;
-}
-
-.radio_list_btn:hover {
-  background-color: #0b101a;
-}
-
-.radio_picker {
-  background-color: #111827;
-  color: #b0b4bc;
-  padding: 10px;
-}
-
-.workspace_btn {
-  all: unset;
-  color: #e0def4;
-  min-width: 15px;
-  font-size: medium;
-  font-family: CaskaydiaCove NFP SemiBold;
 }
 
 .battery {
@@ -110,8 +96,14 @@ $yellow:    #f9e2af;
   font-size: 18px;
 }
 
-//.workspaces button:hover {
-//  color: #D35D6E;
-//}
+.radio_btn {
+  min-width: 30px;
+  min-height: 30px;
+  font-size: 1.2em;
+  padding-left: 0.5em;
+  padding-right: 0.8em;
+}
 
-
+.radio_btn:hover {
+  background-color: #0b101a;
+}
