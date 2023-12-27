@@ -38,7 +38,7 @@ fn query_workspaces(workspace_count: usize) -> Vec<Workspace> {
     let result: Vec<Workspace> = serde_json::from_str(&String::from_utf8_lossy(&output.stdout)).expect("Failed to parse json");
 
     let mut workspaces: Vec<Workspace> = Vec::with_capacity(workspace_count);
-    for n in 1..workspaces.capacity() {
+    for n in 1..workspaces.capacity() + 1 {
         workspaces.push(Workspace { id: n, windows: 0 });
     }
     for workspace in result.iter() {
