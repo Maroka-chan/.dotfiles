@@ -1,18 +1,25 @@
-(deflisten brightness `scripts/brightness_monitor.sh`)
+(deflisten brightness :initial 0.0 `scripts/brightness_monitor.sh`)
 (deflisten volume :initial 0.0 `scripts/volume_monitor.sh get-volume`)
 (deflisten volume_muted :initial 0.0 `scripts/volume_monitor.sh get-muted`)
 (deflisten cava `scripts/cava/cava-pipe.sh`)
-(deflisten workspaces `scripts/hyprland-events 9`)
+(deflisten workspaces :initial '{}' `scripts/hyprland-events 9`)
 (deflisten radio `scripts/radio/radio_handler.sh`)
+
+(defpoll time :interval "10s"
+  "date '+%H:%M %b %d, %Y'")
 
 (defvar radiopipe "/tmp/eww/radio/pipe")
 (defvar radio_reveal false)
 (defvar isMusicPlaying false)
 (defvar activeRadio "JPopsuki")
 (defvar radios '{
+   "Asia_Dream": "https://cast1.torontocast.com:2120/?type=http&nocache=181711",
    "JPopsuki": "http://jpopsuki.fm:8000/autodj.m3u",
-   "Listen.Moe": "https://listen.moe/stream"
+   "Listen.Moe": "https://listen.moe/stream",
+   "Tsubaki": "http://stream.tsubakianimeradio.com:9000/play.mp3?ver=274579"
 }')
+
+(defvar controls_reveal false)
 
 (defwidget bar []
   (centerbox :orientation "h" :class "mainbar"
@@ -57,10 +64,23 @@
             :min 0
             :max 101
             :onchange "")
-    (image  :path "../../icons/battery/battery-${round(EWW_BATTERY.BAT0.capacity / 10, 0) * 10}.svg"
-            :image-height 15
-            :class "battery"
-            :tooltip "${EWW_BATTERY.BAT0.capacity}%"
+    (box :orientation "h"
+         :class "battery"
+         :space-evenly false
+      (scale :min 0
+             :max 101
+             :tooltip "${EWW_BATTERY.BAT0.capacity}%"
+             :active false
+             :value {EWW_BATTERY.BAT0.capacity}
+      )
+    )
+    (eventbox :cursor "pointer"
+      (button
+        :class "radio_btn"
+        :valign "center"
+        :onclick `eww update controls_reveal=${!controls_reveal}`
+        (label :text {time} :class "timedate")
+      )
     )
   )
 )
@@ -74,9 +94,6 @@
 
 (defwidget play_pause []
   (eventbox
-       :orientation "h"
-       :space-evenly false
-       :spacing 0
        :halign "center"
        :cursor "pointer"
     (button
@@ -117,6 +134,25 @@
   )
 )
 
+(defwidget controls_panel []
+  (box :orientation "v" :class "controls_panel" :space-evenly false
+    (graph
+      :value {EWW_NET.wlp0s20f3.NET_DOWN}
+      :time-range "30s"
+      :width 200
+      :height 80
+    )
+    (circular-progress
+      :value {EWW_BATTERY.BAT0.capacity}
+      :thickness 6
+      :width 70
+      :height 70
+      :class "battery_circle"
+      (label :text "${EWW_BATTERY.BAT0.capacity}")
+    )
+  )
+)
+
 (defwidget metric [label value onchange min max]
   (box :orientation "h"
        :class "metric"
@@ -135,8 +171,8 @@
 (defwindow statusbar
   :monitor 0
   :exclusive true
-  :geometry (geometry :x "0%"
-                      :y "0%"
+  :geometry (geometry :x "0"
+                      :y "0"
                       :width "100%"
                       :height "30px"
                       :anchor "bottom center")
@@ -147,17 +183,32 @@
   :monitor 0
   :exclusive false
   :namespace "radio"
-  :geometry (geometry :x "0%"
-                      :y "0%"
+  :geometry (geometry :x "0"
+                      :y "-2"
                       :width "0"
-                      :height "0"
+                      :height "2"
                       :anchor "bottom left")
-  (expander :expanded true
-    (revealer
-      :reveal radio_reveal
-      :transition "slideup"
-      :duration "350ms"
-      (radio_list)
-    )
+  (revealer
+    :reveal radio_reveal
+    :transition "slideup"
+    :duration "350ms"
+    (radio_list)
+  )
+)
+
+(defwindow controls
+  :monitor 0
+  :exclusive false
+  :namespace "controls"
+  :geometry (geometry :x "-2"
+                      :y "0"
+                      :width "2"
+                      :height "100%"
+                      :anchor "center right")
+  (revealer
+    :reveal controls_reveal
+    :transition "slideleft"
+    :duration "350ms"
+    (controls_panel)
   )
 )
