@@ -14,9 +14,9 @@ start_radio () {
 }
 
 kill_radio () {
-  if [ ! -z ${radiopid+x} ]; then
-    if grep -qFx $radiopid <(jobs -rp); then
-       kill $radiopid
+  if [ -n "${radiopid+x}" ]; then
+    if grep -qFx "$radiopid" <(jobs -rp); then
+       kill "$radiopid"
     fi
     unset radiopid
   fi
@@ -38,12 +38,12 @@ fi
 
 while true
 do
-  if read line <$pipe; then
+  if read -r line <$pipe; then
     message=($line)
     case ${message[0]} in
       play)
         kill_radio
-        start_radio ${message[1]}
+        start_radio "${message[1]}"
         ;;
       stop)
         kill_radio
