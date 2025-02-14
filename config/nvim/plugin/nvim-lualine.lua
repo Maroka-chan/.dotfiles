@@ -3,7 +3,7 @@ local lualine = require('lualine')
 local configuration = {
   options = {
     icons_enabled = true,
-    theme = 'tokyonight',
+    theme = 'kanagawa',
     component_separators = { left = '', right = ''},
     section_separators = { left = '', right = ''},
     disabled_filetypes = {
@@ -41,12 +41,5 @@ local configuration = {
   extensions = {}
 }
 
-
-local funcs = {}
-
-funcs.setup = function()
-  lualine.setup(configuration)
-end
-
-
-return funcs
+-- Setup
+lualine.setup(configuration)

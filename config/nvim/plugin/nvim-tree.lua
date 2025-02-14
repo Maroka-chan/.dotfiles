@@ -8,11 +8,6 @@ local configuration = {
   },
   view = {
     adaptive_size = true,
-    mappings = {
-      list = {
-        { key = "u", action = "dir_up" },
-      },
-    },
   },
   renderer = {
     group_empty = true,
@@ -31,16 +26,8 @@ local configuration = {
   }
 }
 
+-- Setup
+nvimtree.setup(configuration)
 
-local funcs = {}
-
-funcs.setup = function()
-  nvimtree.setup(configuration)
-end
-
-funcs.setup_keybindings = function()
-  vim.keymap.set('n', '<M-TAB>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })
-end
-
-
-return funcs
+-- Keymappings
+vim.keymap.set('n', '<M-TAB>', ':NvimTreeToggle<CR>', { noremap = true, silent = true })

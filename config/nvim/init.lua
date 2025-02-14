@@ -19,8 +19,3 @@ options.termguicolors = true
 options.mouse         = 'nvi'
 options.signcolumn    = 'yes'
 options.clipboard     = 'unnamedplus'
-
--- Set up Plugins
-require('plugins')
-
--- test

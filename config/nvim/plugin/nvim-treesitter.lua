@@ -32,9 +32,9 @@ local parsers_to_install = {
 }
 
 local configuration = {
-  ensure_installed = parsers_to_install,
+  ensure_installed = {}, -- Installed through NixOS
   sync_install = false,
-  auto_install = true,
+  auto_install = false,
 
   highlight = {
     enable = true,
@@ -62,11 +62,5 @@ local configuration = {
 }
 
 
-local funcs = {}
-
-funcs.setup = function ()
-  treesitter_configs.setup(configuration)
-end
-
-
-return funcs
+-- Setup
+treesitter_configs.setup(configuration)
