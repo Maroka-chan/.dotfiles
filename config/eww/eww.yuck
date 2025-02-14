@@ -16,7 +16,8 @@
    "Asia_Dream": "https://cast1.torontocast.com:2120/?type=http&nocache=181711",
    "JPopsuki": "http://jpopsuki.fm:8000/autodj.m3u",
    "Listen.Moe": "https://listen.moe/stream",
-   "Tsubaki": "http://stream.tsubakianimeradio.com:9000/play.mp3?ver=274579"
+   "Tsubaki": "http://stream.tsubakianimeradio.com:9000/play.mp3?ver=274579",
+   "CityPop": "https://ss-edge.joeycast.com/citypop.mp3"
 }')
 
 (defvar controls_reveal false)
